@@ -1,21 +1,22 @@
 # 测试结果(绿色代表最快，红色代表最慢)
 ## 单机测试
 
-| 数据库    |   写  |  读  |  count  |
-| --------    | :-----:  | :----:   |:----:   |
-|  MongoDB    |  19.1s     |   2.8s | 129ms |
-|   Mysql     |  <font color=red>69s</font>     |   <font color=green>1.3s</font>  |  <font color=green>115ms</font>
-|  Cassandra  |  <font color=green>9s</font>    |  <font color=red>8.3s</font>      | <font color=red>2.4s</font> |
+| 数据库    |   写  |  读  |  count  | 文档 | 编码难易度 | 集群环境配置 |
+| --------    | :-----:  | :----:   |:----:   | :----:   |:----:   |:----:|
+|  MongoDB    | 19.1s     |   2.8s | 129ms | 非常详尽 | 完全使用JPA，极其简单| 比较麻烦 |
+|   Mysql     |<font color=red>69s</font>     |   <font color=green>1.3s</font>  |  <font color=green>115ms</font> | 非常详尽 | 可以使用JPA，但批量写入性能极差| N/A|
+|  Cassandra  |<font color=green>9s</font>    |  <font color=red>8.3s</font>      | <font color=red>2.4s</font> | 一般 | 可以使用JPA，但批量写入性能较差| 极其简单|
 ## 集群测试
 | 数据库    |   写  |  读  | 数据分布                             |count|
 | --------    | :-----:  | :----: |:-----:                      | :-----:|
 |  MongoDB    |  <font color=red>24.2s</font>     |   <font color=green>2.8s</font> |  小数据不均匀，大数据均匀   |<font color=green>120ms</font>|
 |  Cassandra  |  <font color=green>13.7s</font>   |  <font color=red>10.2s</font> | 非常均匀                    |<font color=red>2.3s</font>|
-## 备注
+## 测试说明
 * 数据总量：50万
 * "读"是根据pkTask字段进行的查询，由于返回数据量巨大，索引对速度几乎没有影响，性能瓶颈在网络传输上
 * count是根据pkTask字段进行数量统计，由于返回数据量很小，索引对性能的影响就非常明显
 * cassandra进行条件查询时，若条件字段不是主键则必须配置Secondary Index，否则不能进行条件查询，非主键即使加了索引查询速度也很慢，主键查询瞬间返回
+* cassandra的读性能还需继续调研
 # 数据库具体配置
 ## MongoDB
 * 节点数量：3
