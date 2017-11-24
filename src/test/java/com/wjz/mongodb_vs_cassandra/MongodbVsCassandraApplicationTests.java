@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,6 +181,7 @@ public class MongodbVsCassandraApplicationTests {
     }
 
     @Test
+    @Transactional
     public void c_mysqlWriteTest() {
         List<MysqlBugVO> bugVO4MysqlList = new ArrayList<>();
         for (long i = 1; i <= COUNT; i++) {
