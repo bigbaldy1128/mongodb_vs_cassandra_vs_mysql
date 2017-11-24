@@ -10,7 +10,7 @@
 | 数据库    |   写  |  读  | 数据分布                             |count| 数据迁移 |
 | --------    | :-----:  | :----: |:-----:                      | :-----:|:-----:|
 |  MongoDB    |  <font color=red>24.2s</font>     |   <font color=green>2.8s</font> |  小数据不均匀，大数据均匀   |<font color=green>120ms</font>| 录入数据时自动平衡节点数据|
-|  Cassandra  |  <font color=green>13.7s</font>   |  <font color=red>10.2s</font> | 非常均匀                    |<font color=red>2.3s</font>| 未开始研究|
+|  Cassandra  |  <font color=green>13.7s</font>   |  <font color=red>10.2s</font> | 非常均匀                    |<font color=red>2.3s</font>| 新节点上线后自动平衡节点数据|
 ## 测试说明
 * 数据总量：50万
 * "读"是根据pkTask字段进行的查询，由于返回数据量巨大，索引对速度几乎没有影响，性能瓶颈在网络传输上
