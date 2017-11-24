@@ -1,0 +1,26 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjz.mongodb_vs_cassandra.domain.DataMapper4Mysql">
+    <insert id="addBugs">
+        insert into chk_res_bug
+        (id,pkTask,engine_id,bug_id,bug_level,rule_code,standard_name,
+        rule_type,rule_name,file_path,file_encoding,bug_file,
+        bug_file_md5,bug_func,bug_begin_line,bug_begin_col,bug_end_line,bug_end_col,
+        audit_result,audit_memo,pk_user,audit_time,file_type,svn_git_info,tool,spoint,bug_status)
+        values
+        <foreach collection="bugList" item="item" index="index"
+                 separator=",">
+            (#{item.id},#{item.pkTask},#{item.engine_id},#{item.bug_id},#{item.bug_level},#{item.rule_code},#{item.standard_name},
+            #{item.rule_type},#{item.rule_name},#{item.file_path},#{item.file_encoding},#{item.bug_file},
+            #{item.bug_file_md5},#{item.bug_func},#{item.bug_begin_line},#{item.bug_begin_col},#{item.bug_end_line},#{item.bug_end_col},
+            #{item.audit_result},#{item.audit_memo},#{item.pk_user},#{item.audit_time},#{item.file_type},#{item.svn_git_info},#{item.tool},#{item.spoint},#{item.bug_status})
+        </foreach>
+    </insert>
+    <select id="queryByPkTask" resultType="com.wjz.mongodb_vs_cassandra.domain.MysqlBugVO">
+        select * from chk_res_bug where pkTask=#{pkTask}
+    </select>
+    <select id="getCount" resultType="int">
+        select count(1) from chk_res_bug where pkTask=#{pkTask}
+    </select>
+</mapper>
