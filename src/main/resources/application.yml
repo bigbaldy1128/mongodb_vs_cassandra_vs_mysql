@@ -5,6 +5,7 @@ spring:
     cassandra:
       keyspace-name: test
       contact-points: 172.24.62.181
+      read-timeout-millis: 60000
   datasource:
     url: jdbc:mysql://172.24.62.181:3306/test?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
     username: codesafe

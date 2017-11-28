@@ -4,8 +4,6 @@ import lombok.Data;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
-import java.util.Date;
-
 @Data
 @Table("bug")
 public class CassandraBugVO {

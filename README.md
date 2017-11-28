@@ -1,24 +1,18 @@
 # 测试结果(绿色代表最快，红色代表最慢)
-## 单机测试
-
-| 数据库    |   写  |  读  |  count  | 文档 | 编码难易度 | 集群环境配置 |
-| --------    | :-----:  | :----:   |:----:   | :----:   |:----:   |:----:|
-|  MongoDB    | 19.1s     |   2.8s | 129ms | 非常详尽 | 完全使用JPA，极其简单| 比较麻烦 |
-|   Mysql     |<font color=red>69s</font>     |   <font color=green>1.3s</font>  |  <font color=green>115ms</font> | 非常详尽 | 可以使用JPA，但批量写入性能极差| N/A|
-|  Cassandra  |<font color=green>9s</font>    |  <font color=red>8.3s</font>      | <font color=red>2.4s</font> | 一般 | 可以使用JPA，但批量写入性能较差| 极其简单|
-## 集群测试
-| 数据库    |   写  |  读  | 数据分布                             |count| 数据迁移 |
-| --------    | :-----:  | :----: |:-----:                      | :-----:|:-----:|
-|  MongoDB    |  <font color=red>24.2s</font>     |   <font color=green>2.8s</font> |  小数据不均匀，大数据均匀   |<font color=green>120ms</font>| 录入数据时自动平衡节点数据|
-|  Cassandra  |  <font color=green>13.7s</font>   |  <font color=red>10.2s</font> | 非常均匀                    |<font color=red>2.3s</font>| 新节点上线后自动平衡节点数据|
+| 数据库    |数据库类型|   写  |  读  | 聚合函数 |数据分布| 数据迁移 | 查询功能
+|------|:-----:|:-----:| :----: |:-----: | :-----:|:-----:|:-----:|
+|MongoDB|Document store|24.2s|1.5s|120ms|小数据不均匀，大数据均匀|录入数据时自动平衡节点数据|功能全面，性能较好|
+|Cassandra|Wide column store|<font color=green>10s</font>|<font color=red>3.9s</font>|<font color=red>2.3s</font>|非常均匀|新节点上线后自动平衡节点数据|功能有限，性能较差|
+|Mysql|RDBMS|<font color=red>69s</font>|<font color=green>1.3s</font>|<font color=green>113ms</font>|N/A|N/A|功能全面，性能优异|
 ## 测试说明
 * 数据总量：50万
-* "读"是根据pkTask字段进行的查询，由于返回数据量巨大，索引对速度几乎没有影响，性能瓶颈在网络传输上
-* count是根据pkTask字段进行数量统计，由于返回数据量很小，索引对性能的影响就非常明显
-* mongodb若使用hashed分片方式，数据存储将非常均匀，但写入速度大幅下降
-* cassandra进行条件查询时，若条件字段不是主键则必须配置Secondary Index，否则不能进行条件查询，非主键即使加了索引查询速度也很慢，主键查询瞬间返回
-* cassandra的读性能还需继续调研
-* **cassandra插入50万数据，但只能查出325571条数据，原因暂时不清**
+* "读"是根据pkTask字段进行的查询
+* “聚合函数”是进行count操作，索引对性能的影响非常明显
+* Mongodb若使用hashed分片方式，数据存储将非常均匀，但写入速度大幅下降
+* Cassandra进行条件查询时，性能与数据大小成正比，聚合操作性能很差，查询与聚合功能都十分有限
+* Mongodb与Cassandra集群性能都要低于单机
+* JPA方式操作总体性能都较差，以上测试结果都是采用我目前已知的最快方式得出的结果
+* **Cassandra插入50万数据，但查出的数据小于50万，会有几万数据丢失，原因暂时不清**
 # 数据库具体配置
 ## MongoDB
 * 节点数量：3
